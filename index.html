@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <meta name="viewport" content="width=device-width">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=PT+Sans+Narrow&display=swap" rel="stylesheet">
+
+    <style>
+
+        @import url('https://fonts.googleapis.com/css2?family=PT+Sans+Narrow&display=swap');
+
+        #app {
+
+            font-family: 'PT Sans Narrow', sans-serif;
+            display: flex;
+            flex-direction: column;
+            flex-wrap: nowrap;
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            top: 0;
+        }
+
+        .cardField {
+            display: flex;
+            flex-direction: column;
+            flex-wrap: nowrap;
+            flex-grow: 1;
+            margin: min(1vw, 1vh);
+        }
+
+        .cardRow {
+            flex-grow: 1;
+            flex-basis: 0;
+            display: flex;
+            flex-wrap: nowrap;
+        }
+
+
+        .card {
+            transition: 0.1s;
+            padding: 0 1vw;
+            flex-grow: 1;
+            flex-basis: 0;
+            background-color: #f8f8f8;
+            border-radius: 5px;
+            border: max(0.5vw, 0.5vh) solid transparent;
+            margin: max(0.5vw, 0.5vh);
+            color: #333;
+            box-shadow: 0 0.1em 0.5em rgb(0, 0, 0, 0.4);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: min(3vw, 4vh);
+        }
+
+        .card .word {
+            text-transform: capitalize;
+            user-select: none;
+            text-align: center;
+            word-wrap: anywhere;
+        }
+
+        .card.team-1 {
+            border-color: #bebea6;
+            color: #443;
+            background-color: #eaead4
+        }
+
+        .card.team0 {
+            border-color: red;
+            color: #733;
+            background-color: lightpink
+        }
+
+        .card.team1 {
+            border-color: darkblue;
+            color: #226;
+            background-color: lightskyblue
+        }
+
+        .card.team-2 {
+            border-color: black;
+            background-color: black;
+            color: #cbcbcb
+        }
+
+        .bw .card .word {
+            background-color: #fff;
+            color: #000;
+        }
+
+        .bw .card.team0 {
+            background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAFCAYAAAB8ZH1oAAAALklEQVQIW2NkYGD4D8QgwAil0SmwPEgSphCmAKsGZEG8GrDpxqoBl7tAzkDRAADOZAYEKA5vvgAAAABJRU5ErkJggg==);
+        }
+
+        .bw .card.team1 {
+            background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAAICAYAAADED76LAAAAMUlEQVQYV2NkwA/+M+KR/w+UY8SlACwJ0oxNAVwSmwIUSXQFGJLICrBKwhTglAQpAAAY5AgIyRpU6AAAAABJRU5ErkJggg==);
+        }
+
+        .bw .card.team-1 {
+            background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAAIUlEQVQYV2NkIBIwEqmOgSKF/4G2YBhAkYlYnT0ETPwPABZzAgr9qxx+AAAAAElFTkSuQmCC);
+        }
+
+
+        .card:hover {
+            transition: 0.1s;
+            box-shadow: 0 0 1em #000;
+            filter: brightness(110%);
+        }
+
+        .micro {
+            font-size: 70%;
+            color: #777;
+            font-family: monospace
+        }
+
+
+    </style>
+</head>
+<body>
+<script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+<script src="https://unpkg.com/vue-i18n@9"></script>
+
+<div id="app">
+    <div>
+        Connected: {{connected}} / {{unansweredCount}}
+    </div>
+    <div id="initial_screen">
+        <button type="button" @click="initGame">INIT</button>
+    </div>
+    <div v-if="state" class="cardField" :class="{bw: bw}">
+        <b>{{state.name}}</b>
+
+        <div v-for="(row, rowIndex) in cardRows" :key="rowIndex" class="cardRow">
+            <div v-for="(card, cardIndex) in row" :key="cardIndex" class="card" :class="cardClass(card)"
+                 @click="openCard(card)">
+                <div class="word" :style="{fontSize: cardFontScale + '%'}">{{card.word}}</div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<script>
+    const {createApp} = Vue
+
+    const app = createApp({
+        data() {
+            return {
+                cardFontScale: 100,
+                bw: false,
+                perRow: 5,
+                ws: null,
+                connected: false,
+                queueToSend: [],
+                sentCount: 0,
+                receivedCount: 0,
+                state: false
+            }
+        },
+        computed: {
+            unansweredCount() {
+                return this.sentCount - this.receivedCount
+            },
+            shouldSend() {
+                return this.queueToSend.length + this.connected;
+            },
+            cardRows() {
+                const rows = [];
+                let start = 0;
+                while (start < this.state.cards.length) {
+                    let end = start + this.perRow;
+                    rows.push(this.state.cards.slice(start, end))
+                    start = end
+                }
+                return rows
+            }
+        },
+        methods: {
+            cardClass(card) {
+                return card.is_opened ? ('team' + card.team) : ""
+            },
+            initGame() {
+                const rules = {cards_set: 0, cards_count: 25, team_cards_count: [9, 8],};
+                this.queueToSend.push(JSON.stringify({action: 'init', rules: rules}))
+            },
+            openCard(card) {
+                if (card.is_opened) {
+                    return
+                }
+                const i = this.state.cards.indexOf(card);
+                this.queueToSend.push(JSON.stringify({action: 'open', card: i, game: this.state.name}))
+            },
+            connectWs() {
+                console.log("Connecting...")
+                this.ws = new WebSocket("ws://localhost:8000/ws");
+                this.ws.onopen = () => {
+                    this.connected = true;
+                }
+                this.ws.onmessage = (event) => {
+                    this.receivedCount++;
+                    this.parseMessage(event.data)
+                };
+                this.ws.onclose = (e) => {
+                    console.info("Connection closed")
+                    this.connected = false
+                }
+            },
+            parseMessage(s) {
+                const data = JSON.parse(s)
+                if (!data.success) {
+                    console.error(data)
+                }
+
+                if (data.action === 'init') {
+                    this.state = data.state;
+                } else if (data.action === 'open') {
+                    this.state.cards[data.card_id] = data.card;
+                }
+
+            }
+        },
+        watch: {
+            shouldSend() {
+                if (this.queueToSend.length === 0) {
+                    return
+                }
+                if (this.connected) {
+                    this.ws.send(this.queueToSend.shift());
+                    this.sentCount++;
+                } else {
+                    this.connectWs();
+                }
+            }
+        },
+    });
+    app.mount('#app')
+</script>
+
+</body>
+</html>

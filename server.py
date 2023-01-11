@@ -1,3 +1,4 @@
+import logging
 from pathlib import Path
 
 from fastapi import FastAPI, WebSocket, WebSocketDisconnect
@@ -10,61 +11,8 @@ from schemas.rules import Rules
 
 app = FastAPI(docs_url=None, redoc_url=None)
 
-page_html = """
-<!DOCTYPE html>
-<html>
-    <head>
-        <title>Chat</title>
-    </head>
-    <body>
-        <h1>WebSocket Chat</h1>
-            <input type="text" id="messageText" autocomplete="off"/>
-            <button type="button" onclick="sendMessage()">Send</button>
-            <button type="button" onclick="initGame()">Init</button>
-            <button type="button" onclick="getState()">State</button>
-            <button type="button" onclick="getReState()">ReState</button>
-            <button type="button" onclick="openCard()">Open</button>
-        <ul id='messages'>
-        </ul>
-        <script>
-            let game = "";
-            let ws = new WebSocket("ws://localhost:8000/ws");
-            ws.onmessage = (event) => {
-                const messages = document.getElementById('messages')
-                const message = document.createElement('li')
-                const content = document.createTextNode(event.data)
-                message.appendChild(content)
-                messages.appendChild(message)
-                let parsed = JSON.parse(event.data)
-                console.log(parsed)
-                
-                if (parsed.action === "init") {
-                    game = parsed.state.name
-                }
-            };
-            function sendMessage(event) {
-                let input = document.getElementById("messageText")
-                ws.send(JSON.stringify(input.value))
-                input.value = ''
-                event.preventDefault()
-            }
-            function initGame(event) {
-                const rules = {cards_count: 25, team_cards_count: [2,1], cards_set: 0, cards_for_first_team: 3};
-                ws.send(JSON.stringify({action: 'init', rules: rules}))
-            }
-            function getState(event) {
-                ws.send(JSON.stringify({action: 'full_state', 'game': game}))
-            }
-            function getReState(event) {
-                ws.send(JSON.stringify({action: 'state', 'game': game}))
-            }
-            function openCard(event) {
-                ws.send(JSON.stringify({action: 'open', 'card': 1, 'game': game}))
-            }
-        </script>
-    </body>
-</html>
-"""
+with open(Path(__file__).parent.joinpath('index.html')) as f:
+    page_html = f.read()
 
 manager = ConnectionManager()
 DB_PATH = Path("test.sqlite3")
@@ -85,7 +33,6 @@ async def websocket_endpoint(websocket: WebSocket):
             await process_request(data, websocket)
     except WebSocketDisconnect:
         manager.disconnect(websocket)
-        await manager.send_json(f"Client left the chat", manager._active_connections)
 
 
 async def init_game(rules: dict, websocket: WebSocket):
@@ -138,4 +85,5 @@ async def process_request(data: dict, websocket: WebSocket):
             await get_state(websocket, game, restricted=False)
 
     except (ValueError, RuntimeError, KeyError, TypeError) as e:
+        logging.exception(e)
         await manager.send_json({"error": repr(e)}, manager._active_connections)

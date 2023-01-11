@@ -27,7 +27,7 @@ class GamesDb:
         return self.__connection
 
     def _initialise_db(self):
-        script_file = os.path.join(os.path.dirname(__file__), 'init_script.sql')
+        script_file = os.path.join(os.path.dirname(__file__), 'init_script.sqllite3')
         with open(script_file) as f:
             script = f.read()
         self.__connection.executescript(script)
