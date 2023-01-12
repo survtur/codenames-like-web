@@ -19,7 +19,14 @@ class ConnectionManager:
             self._game_to_ws[game].remove(websocket)
             self._ws_to_game.pop(websocket)
 
+            if len(self._game_to_ws[game]) == 0:
+                self._game_to_ws.pop(game)
+
     def set_game_name(self, websocket: WebSocket, game_name: str):
+        if self._ws_to_game.get(websocket) == game_name:
+            return
+
+        self._remove_ws_from_game(websocket)
         self._ws_to_game[websocket] = game_name
         if game_name not in self._game_to_ws:
             self._game_to_ws[game_name] = []
@@ -27,10 +34,13 @@ class ConnectionManager:
 
     def disconnect(self, websocket: WebSocket):
         self._active_connections.remove(websocket)
+        self._remove_ws_from_game(websocket)
         print(f'Disconnected {websocket.client}. Active connections count: {len(self._active_connections)}.')
+        print(self._ws_to_game)
+        print(self._game_to_ws)
 
     async def send_to_game(self, data: any, game_name: str):
-        await self.send_json(data, self._game_to_ws[game_name])
+        await self.send_json(data, self._game_to_ws.get(game_name, []))
 
     @staticmethod
     async def send_json(data: any, ws: Iterable[WebSocket]):

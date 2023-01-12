@@ -39,11 +39,9 @@ async def init_game(rules: dict, websocket: WebSocket):
     rules = Rules.parse_obj(rules)
     d = GamesDb(DB_PATH)
     game_state = d.new_game(rules)
-    name = game_state.name
-    manager.set_game_name(websocket, name)
-    state_dict = game_state.dict()
-    data = {'success': True, 'state': state_dict, 'action': 'init', 'game': name, }
-    await manager.send_to_game(data, name)
+    data = {'success': True, 'action': 'init', 'game': game_state.name}
+    manager.set_game_name(websocket, game_state.name)
+    await manager.send_to_game(data, game_state.name)
 
 
 async def open_card(game: str, card_index: int):
@@ -73,10 +71,13 @@ async def process_request(data: dict, websocket: WebSocket):
     try:
         action: str = data['action']
         if action == "init":
+
             await init_game(data['rules'], websocket)
+
             return
 
         game: str = data['game']
+        manager.set_game_name(websocket, game)
         if action == "open":
             await open_card(game, data['card'])
         elif action == "state":

@@ -13,7 +13,6 @@
         @import url('https://fonts.googleapis.com/css2?family=PT+Sans+Narrow&display=swap');
 
         #app {
-
             font-family: 'PT Sans Narrow', sans-serif;
             display: flex;
             flex-direction: column;
@@ -25,12 +24,20 @@
             top: 0;
         }
 
-        .cardField {
+        #startMenu {
+            position: fixed;
+            display: flex;
+            flex-direction: row
+
+        }
+
+        #cardField {
             display: flex;
             flex-direction: column;
             flex-wrap: nowrap;
             flex-grow: 1;
             margin: min(1vw, 1vh);
+            background-color: #fff;
         }
 
         .cardRow {
@@ -106,6 +113,21 @@
             background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAAIUlEQVQYV2NkIBIwEqmOgSKF/4G2YBhAkYlYnT0ETPwPABZzAgr9qxx+AAAAAElFTkSuQmCC);
         }
 
+        .captain .card.opened {
+            opacity: 0.3;
+            border-color: transparent;
+        }
+
+         .captain .card {
+             pointer-events: none;
+         }
+
+        .captain .card.team-1 {
+             background: white;
+             border-color: transparent;
+         }
+
+
 
         .card:hover {
             transition: 0.1s;
@@ -113,12 +135,13 @@
             filter: brightness(110%);
         }
 
+
+
         .micro {
             font-size: 70%;
             color: #777;
             font-family: monospace
         }
-
 
     </style>
 </head>
@@ -127,22 +150,31 @@
 <script src="https://unpkg.com/vue-i18n@9"></script>
 
 <div id="app">
-    <div>
-        Connected: {{connected}} / {{unansweredCount}}
-    </div>
-    <div id="initial_screen">
-        <button type="button" @click="initGame">INIT</button>
-    </div>
-    <div v-if="state" class="cardField" :class="{bw: bw}">
-        <b>{{state.name}}</b>
-
-        <div v-for="(row, rowIndex) in cardRows" :key="rowIndex" class="cardRow">
-            <div v-for="(card, cardIndex) in row" :key="cardIndex" class="card" :class="cardClass(card)"
-                 @click="openCard(card)">
-                <div class="word" :style="{fontSize: cardFontScale + '%'}">{{card.word}}</div>
-            </div>
+    <div id="startMenu">
+        <div>
+            <button type="button" @click="initGame">Создать игру</button>
         </div>
-
+        <div>
+            <button type="button" @click="showEnterForm = true">Войти игру</button>
+            <template v-if="showEnterForm">
+                <input type="text" v-model.trim="gameName"/>
+                <button type="button" @click="enterAsCaptain" :enabled="!!gameName">Капитан</button>
+                <button type="button" @click="enterAsPlayer" :enabled="!!gameName">Игрок</button>
+            </template>
+        </div>
+    </div>
+    <!--    <div>-->
+    <!--        Connected: {{connected}} / {{unansweredCount}}-->
+    <!--    </div>-->
+    <div id="cardField" :class="{bw: bw, captain: isCaptain}">
+        <template v-if="state">
+            <div v-for="(row, rowIndex) in cardRows" :key="rowIndex" class="cardRow">
+                <div v-for="(card, cardIndex) in row" :key="cardIndex" class="card" :class="cardClass(card)"
+                     @click="openCard(card)">
+                    <div class="word" :style="{fontSize: cardFontScale + '%'}">{{card.word}}</div>
+                </div>
+            </div>
+        </template>
     </div>
 </div>
 
@@ -152,6 +184,7 @@
     const app = createApp({
         data() {
             return {
+
                 cardFontScale: 100,
                 bw: false,
                 perRow: 5,
@@ -160,7 +193,10 @@
                 queueToSend: [],
                 sentCount: 0,
                 receivedCount: 0,
-                state: false
+                state: false,
+                showEnterForm: false,
+                isCaptain: false,
+                gameName: '',
             }
         },
         computed: {
@@ -183,18 +219,25 @@
         },
         methods: {
             cardClass(card) {
-                return card.is_opened ? ('team' + card.team) : ""
+                return (card.team !== null ? ('team' + card.team) : "") + (card.is_opened ? ' opened' : '')
             },
             initGame() {
                 const rules = {cards_set: 0, cards_count: 25, team_cards_count: [9, 8],};
                 this.queueToSend.push(JSON.stringify({action: 'init', rules: rules}))
+            },
+            enterAsCaptain() {
+                this.queueToSend.push(JSON.stringify({action: 'full_state', game: this.gameName}))
+            },
+            enterAsPlayer() {
+                const rules = {cards_set: 0, cards_count: 25, team_cards_count: [9, 8],};
+                this.queueToSend.push(JSON.stringify({action: 'state', game: this.gameName}))
             },
             openCard(card) {
                 if (card.is_opened) {
                     return
                 }
                 const i = this.state.cards.indexOf(card);
-                this.queueToSend.push(JSON.stringify({action: 'open', card: i, game: this.state.name}))
+                this.queueToSend.push(JSON.stringify({action: 'open', card: i, game: this.gameName}))
             },
             connectWs() {
                 console.log("Connecting...")
@@ -218,9 +261,14 @@
                 }
 
                 if (data.action === 'init') {
-                    this.state = data.state;
+                    this.gameName = data.game
+                    this.showEnterForm = true
                 } else if (data.action === 'open') {
                     this.state.cards[data.card_id] = data.card;
+                } else if (data.action === 'full_state' || data.action === 'state') {
+                    this.isCaptain = data.action === 'full_state'
+                    this.state = data.state
+                    this.gameName = data.game
                 }
 
             }

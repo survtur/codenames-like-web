@@ -37,7 +37,7 @@ def full_state_to_restricted(full: FullGameState) -> RestrictedGameState:
 
     teams_cards: dict[int, int] = dict()
     for c in full.cards:
-        cards.append(RestrictesCard(word=c.word, team=c.team if c.is_opened else None))
+        cards.append(RestrictesCard(word=c.word, team=c.team if c.is_opened else None, is_opened=c.is_opened))
         if c.team >= 0:
             if c.team not in teams_cards:
                 teams_cards[c.team] = 0

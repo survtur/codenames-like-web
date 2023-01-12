@@ -15,6 +15,7 @@ class FullGameState(BaseModel):
 class RestrictesCard(BaseModel):
     word: str  # word
     team: int | None  # team_id
+    is_opened: int
 
 
 class RestrictedGameState(BaseModel):
