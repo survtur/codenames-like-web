@@ -6,7 +6,8 @@ from fastapi.responses import HTMLResponse
 
 from conn_manager import ConnectionManager
 from db.db import GamesDb
-from game import full_state_to_restricted
+from game import update_game_stats
+from schemas.game_state import FullGameState
 from schemas.rules import Rules
 
 app = FastAPI(docs_url=None, redoc_url=None)
@@ -44,47 +45,48 @@ async def init_game(rules: dict, websocket: WebSocket):
     await manager.send_to_game(data, game_state.name)
 
 
-async def open_card(game: str, card_index: int):
+def open_card(game: str, card_index: int) -> FullGameState:
     d = GamesDb(DB_PATH)
     game_state = d.get_game_state(game)
 
     card = game_state.cards[card_index]
     if not card.is_opened:
         card.is_opened = True
+        update_game_stats(game_state)
         d.update_game(game_state)
 
-    await manager.send_to_game(
-        {'success': True, 'card': card.dict(), 'card_id': card_index, 'action': 'open', 'game': game, },
-        game_state.name)
+    return game_state
 
 
-async def get_state(websocket: WebSocket, game: str, restricted: bool):
+def get_state(game: str) -> FullGameState:
     d = GamesDb(DB_PATH)
-    game_state = d.get_game_state(game)
-    if restricted:
-        game_state = full_state_to_restricted(game_state)
-    await websocket.send_json({'success': True, 'state': game_state.dict(), 'game': game,
-                               'action': 'state' if restricted else 'full_state'})
+    return d.get_game_state(game)
 
 
 async def process_request(data: dict, websocket: WebSocket):
     try:
         action: str = data['action']
         if action == "init":
-
             await init_game(data['rules'], websocket)
-
             return
 
         game: str = data['game']
         manager.set_game_name(websocket, game)
         if action == "open":
-            await open_card(game, data['card'])
-        elif action == "state":
-            await get_state(websocket, game, restricted=True)
-        elif action == "full_state":
-            await get_state(websocket, game, restricted=False)
+            state = open_card(game, data['card'])
+            await _send_game_state(state)
+        elif action == "join":
+            state = get_state(game)
+            await _send_game_state(state, websocket)
 
     except (ValueError, RuntimeError, KeyError, TypeError) as e:
         logging.exception(e)
-        await manager.send_json({"error": repr(e)}, manager._active_connections)
+        await manager.send_json({"error": repr(e)}, [websocket])
+
+
+async def _send_game_state(s: FullGameState, ws_to_use: WebSocket | None = None):
+    data = {'success': True, 'action': 'state', 'state': s.dict(), 'game': s.name}
+    if not ws_to_use:
+        await manager.send_to_game(data, s.name)
+    else:
+        await manager.send_json(data, [ws_to_use])

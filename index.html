@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns="http://www.w3.org/1999/html">
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
@@ -10,9 +10,10 @@
 
     <style>
 
+
         @import url('https://fonts.googleapis.com/css2?family=PT+Sans+Narrow&display=swap');
 
-        #app {
+        #wrapper {
             font-family: 'PT Sans Narrow', sans-serif;
             display: flex;
             flex-direction: column;
@@ -24,11 +25,40 @@
             top: 0;
         }
 
+        @media screen and (orientation: portrait) {
+            #wrapper.rotated {
+                transform: rotate(90deg);
+                transform-origin: top left;
+                width: 100vh;
+                height: 100vw;
+                left: 100vw;
+                padding-bottom: 100vh;
+            }
+        }
+
+
+        #scores {
+            display: flex;
+            flex-direction: row;
+        }
+
+        #scores .score {
+            flex-grow: 1;
+            flex-basis: 0;
+            text-align: center;
+            font-size: 12vh;
+        }
+
         #startMenu {
-            position: fixed;
             display: flex;
             flex-direction: row
+        }
 
+        #blinker {
+            position: fixed;
+            top: 0;
+            right: 0;
+            font-size: 5px;
         }
 
         #cardField {
@@ -37,7 +67,7 @@
             flex-wrap: nowrap;
             flex-grow: 1;
             margin: min(1vw, 1vh);
-            background-color: #fff;
+            background-color: #eee;
         }
 
         .cardRow {
@@ -55,156 +85,191 @@
             flex-basis: 0;
             background-color: #f8f8f8;
             border-radius: 5px;
-            border: max(0.5vw, 0.5vh) solid transparent;
             margin: max(0.5vw, 0.5vh);
             color: #333;
-            box-shadow: 0 0.1em 0.5em rgb(0, 0, 0, 0.4);
+            box-shadow: 0 0.05em 0.1em rgb(0, 0, 0, 0.4);
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: min(3vw, 4vh);
-        }
-
-        .card .word {
+            font-size: min(5vw, 5vh);
+            line-height: 1;
             text-transform: capitalize;
             user-select: none;
             text-align: center;
             word-wrap: anywhere;
         }
 
-        .card.team-1 {
-            border-color: #bebea6;
-            color: #443;
-            background-color: #eaead4
-        }
-
-        .card.team0 {
-            border-color: red;
-            color: #733;
-            background-color: lightpink
-        }
-
-        .card.team1 {
-            border-color: darkblue;
-            color: #226;
-            background-color: lightskyblue
-        }
-
-        .card.team-2 {
-            border-color: black;
+        .team-2 {
             background-color: black;
             color: #cbcbcb
         }
 
-        .bw .card .word {
-            background-color: #fff;
-            color: #000;
+        .team-1 {
+            color: #443;
+            background-color: #eaead4
         }
 
-        .bw .card.team0 {
-            background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAFCAYAAAB8ZH1oAAAALklEQVQIW2NkYGD4D8QgwAil0SmwPEgSphCmAKsGZEG8GrDpxqoBl7tAzkDRAADOZAYEKA5vvgAAAABJRU5ErkJggg==);
+        .team0 {
+            color: #733;
+            background-color: lightpink
         }
 
-        .bw .card.team1 {
+        .team1 {
+            color: #226;
+            background-color: lightskyblue
+        }
+
+        .bw .word {
+            background-color: rgba(255, 255, 255, 80%);
+        }
+
+        .bw .team-2 .word {
+            background-color: #000;
+            color: #fff
+        }
+
+        .bw .team0 {
             background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAAICAYAAADED76LAAAAMUlEQVQYV2NkwA/+M+KR/w+UY8SlACwJ0oxNAVwSmwIUSXQFGJLICrBKwhTglAQpAAAY5AgIyRpU6AAAAABJRU5ErkJggg==);
         }
 
-        .bw .card.team-1 {
+        .bw .team1 {
+            background: #aaa;
+        }
+
+        .bw .team-1 {
             background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAAIUlEQVQYV2NkIBIwEqmOgSKF/4G2YBhAkYlYnT0ETPwPABZzAgr9qxx+AAAAAElFTkSuQmCC);
         }
 
-        .captain .card.opened {
+
+        .captain .card.opened:not(.team-2) {
             opacity: 0.3;
-            border-color: transparent;
         }
 
-         .captain .card {
-             pointer-events: none;
-         }
+        .captain .card .word{
+            user-select: none;
+        }
 
         .captain .card.team-1 {
-             background: white;
-             border-color: transparent;
-         }
-
-
+            background: white;
+        }
 
         .card:hover {
             transition: 0.1s;
-            box-shadow: 0 0 1em #000;
+            box-shadow: 0 0.01em 0.4em #000;
             filter: brightness(110%);
         }
 
-
-
-        .micro {
-            font-size: 70%;
-            color: #777;
-            font-family: monospace
+        .card.almost {
+            transition: 1s cubic-bezier(0.0, 1, 0.6, 1.0)
+            transform: perspective(12cm) rotate3d(1, 0, 0, 60deg);
+            box-shadow: 0 40px 20px rgba(0,0,0,70%);
         }
+
 
     </style>
 </head>
 <body>
 <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
-<script src="https://unpkg.com/vue-i18n@9"></script>
 
 <div id="app">
-    <div id="startMenu">
-        <div>
-            <button type="button" @click="initGame">Создать игру</button>
+    <div :class="{bw: bw, captain: isCaptain, rotated: rotated}" id="wrapper">
+        <div id="blinker">
+            <span :style="{color: connectionStyle}">●</span><span
+                :style="{color:  unansweredCount ? 'red' : ''}">●</span>
         </div>
-        <div>
-            <button type="button" @click="showEnterForm = true">Войти игру</button>
-            <template v-if="showEnterForm">
-                <input type="text" v-model.trim="gameName"/>
-                <button type="button" @click="enterAsCaptain" :enabled="!!gameName">Капитан</button>
-                <button type="button" @click="enterAsPlayer" :enabled="!!gameName">Игрок</button>
-            </template>
+        <div id="gameEndPanel" v-if="state && state.winner !== null">
+            WINNER: {{state.winner}}
         </div>
-    </div>
-    <!--    <div>-->
-    <!--        Connected: {{connected}} / {{unansweredCount}}-->
-    <!--    </div>-->
-    <div id="cardField" :class="{bw: bw, captain: isCaptain}">
+        <div id="startMenu">
+            <div>
+                <button type="button" @click="initGame">Создать игру</button>
+            </div>
+            <div>
+                <button type="button" @click="showEnterForm = true">Войти игру</button>
+                <template v-if="showEnterForm || gameName">
+                    <input type="text" v-model.trim="gameName"/>
+                    <button type="button" @click="joinGame(true)" :enabled="!!gameName">Капитан</button>
+                    <button type="button" @click="joinGame(false)" :enabled="!!gameName">Игрок</button>
+                </template>
+            </div>
+        </div>
         <template v-if="state">
-            <div v-for="(row, rowIndex) in cardRows" :key="rowIndex" class="cardRow">
-                <div v-for="(card, cardIndex) in row" :key="cardIndex" class="card" :class="cardClass(card)"
-                     @click="openCard(card)">
-                    <div class="word" :style="{fontSize: cardFontScale + '%'}">{{card.word}}</div>
+            <div id="cardField">
+                <div v-for="(row, rowIndex) in cardRows" :key="rowIndex" class="cardRow">
+                    <div v-for="(card, cardIndex) in row" :key="cardIndex" class="card" :class="cardClass(card)"
+                         ref="cards"
+                         @mousedown="mDown(card)" @mouseup="mUp(card)" @mouseout="mOut(card)"  @touchstart="mDown(card)"
+                     @touchend="mUp(card)"  @touchcancel="mOut(card)"  @touchmove="tMove($event, cardIndex)">
+                        <span class="word" :style="{fontSize: cardFontScale + '%'}" style="pointer-events: none">{{card.word}}</span>
+                    </div>
                 </div>
+            </div>
+            <div id="scores">
+                <div class="score team0">{{state.score[0]}}</div>
+                <div class="score team1">{{state.score[1]}}</div>
             </div>
         </template>
     </div>
+
 </div>
 
 <script>
+
+    function isTouchEventWithElement(event, element) {
+        const item = event.changedTouches.item(0);
+        if (element === null || item === null) return false;
+        const rect = element.getBoundingClientRect();
+        return rect.right > item.clientX &&
+            rect.left < item.clientX &&
+            rect.top < item.clientY &&
+            rect.bottom > item.clientY;
+    }
+
     const {createApp} = Vue
 
     const app = createApp({
         data() {
             return {
+                net: {
+                    websocket: null,
+                    connectionState: WebSocket.CLOSED,
+                    queueToSend: [],
+                    sentCount: 0,
+                    receivedCount: 0,
+                    needConnection: false,
+                },
 
-                cardFontScale: 100,
-                bw: false,
-                perRow: 5,
-                ws: null,
-                connected: false,
-                queueToSend: [],
-                sentCount: 0,
-                receivedCount: 0,
-                state: false,
                 showEnterForm: false,
                 isCaptain: false,
-                gameName: '',
+                gameName: window.location.hash.replace('#', ''),
+                hasWinner: false,
+
+
+                cardFontScale: 100,
+                bw: JSON.parse(localStorage.getItem('bw') || "false"),
+                rotated: JSON.parse(localStorage.getItem('rotated') || "false"),
+                perRow: 5,
+
+                state: false,
             }
         },
         computed: {
+            connectionStyle() {
+                if (this.net.connectionState === WebSocket.OPEN) {
+                    return "#0ea21a"
+                } else if (this.net.connectionState === WebSocket.CONNECTING) {
+                    return "#b07b19"
+                } else if (this.net.needConnection) {
+                    return "#c01616"
+                } else {
+                    return "#000"
+                }
+            },
             unansweredCount() {
-                return this.sentCount - this.receivedCount
+                return this.net.sentCount - this.net.receivedCount
             },
             shouldSend() {
-                return this.queueToSend.length + this.connected;
+                return this.net.queueToSend.length + this.net.connectionState;
             },
             cardRows() {
                 const rows = [];
@@ -218,40 +283,67 @@
             }
         },
         methods: {
-            cardClass(card) {
-                return (card.team !== null ? ('team' + card.team) : "") + (card.is_opened ? ' opened' : '')
+            mDown(card) {
+                console.log("DOWN: " + card.word);
+                card.almost = true;
+            },
+            mOut(card) {
+                console.log("OUT: " + card.word);
+                card.almost = false;
+            },
+            mUp(card) {
+                console.log("UP: " + card.word)
+                card.almost = false;
+            },
+            tMove(e, i) {
+                if (!isTouchEventWithElement(e, this.$refs.cards[i])) {
+                    this.mOut(this.state.cards[i])
+                }
+            },
+            cardClass(c) {
+                const cls = []
+                if (c.is_opened) {
+                    cls.push('opened')
+                }
+                if (c.is_opened || this.isCaptain) {
+                    cls.push('team' + c.team)
+                }
+
+                if (c.almost) {
+                    cls.push('almost')
+                }
+                return cls.join(" ")
             },
             initGame() {
-                const rules = {cards_set: 0, cards_count: 25, team_cards_count: [9, 8],};
-                this.queueToSend.push(JSON.stringify({action: 'init', rules: rules}))
+                const rules = {cards_set: 0, cards_count: 25, team_cards_count: [9, 8]};
+                this.net.needConnection = true;
+                this.net.queueToSend.push(JSON.stringify({action: 'init', rules: rules}));
             },
-            enterAsCaptain() {
-                this.queueToSend.push(JSON.stringify({action: 'full_state', game: this.gameName}))
-            },
-            enterAsPlayer() {
-                const rules = {cards_set: 0, cards_count: 25, team_cards_count: [9, 8],};
-                this.queueToSend.push(JSON.stringify({action: 'state', game: this.gameName}))
+            joinGame(asCap) {
+                this.isCaptain = asCap;
+                this.net.needConnection = true;
+                this.net.queueToSend.push(JSON.stringify({action: 'join', game: this.gameName}))
             },
             openCard(card) {
                 if (card.is_opened) {
                     return
                 }
                 const i = this.state.cards.indexOf(card);
-                this.queueToSend.push(JSON.stringify({action: 'open', card: i, game: this.gameName}))
+                this.net.queueToSend.push(JSON.stringify({action: 'open', card: i, game: this.gameName}))
             },
             connectWs() {
-                console.log("Connecting...")
-                this.ws = new WebSocket("ws://localhost:8000/ws");
-                this.ws.onopen = () => {
-                    this.connected = true;
+                this.net.websocket = new WebSocket("ws://localhost:8000/ws");
+                this.net.connectionState = WebSocket.CONNECTING;
+                this.net.websocket.onopen = () => {
+                    this.net.connectionState = this.net.websocket.readyState;
                 }
-                this.ws.onmessage = (event) => {
-                    this.receivedCount++;
+                this.net.websocket.onmessage = (event) => {
+                    this.net.receivedCount++;
                     this.parseMessage(event.data)
                 };
-                this.ws.onclose = (e) => {
+                this.net.websocket.onclose = (e) => {
                     console.info("Connection closed")
-                    this.connected = false
+                    this.net.connectionState = this.net.websocket.readyState;
                 }
             },
             parseMessage(s) {
@@ -263,27 +355,37 @@
                 if (data.action === 'init') {
                     this.gameName = data.game
                     this.showEnterForm = true
-                } else if (data.action === 'open') {
-                    this.state.cards[data.card_id] = data.card;
-                } else if (data.action === 'full_state' || data.action === 'state') {
-                    this.isCaptain = data.action === 'full_state'
+                } else if (data.action === 'state') {
                     this.state = data.state
                     this.gameName = data.game
+                    window.location.hash = data.game
                 }
 
             }
         },
         watch: {
             shouldSend() {
-                if (this.queueToSend.length === 0) {
+                if (this.net.queueToSend.length === 0) {
                     return
                 }
-                if (this.connected) {
-                    this.ws.send(this.queueToSend.shift());
-                    this.sentCount++;
-                } else {
+                if (this.net.connectionState === WebSocket.OPEN) {
+                    this.net.websocket.send(this.net.queueToSend.shift());
+                    this.net.sentCount++;
+                } else if (this.net.connectionState === WebSocket.CLOSED && this.net.needConnection) {
                     this.connectWs();
                 }
+            },
+            hasWinner(v) {
+                if (v) {
+                    this.net.needConnection = false;
+                    this.net.websocket.close()
+                }
+            },
+            bw(v) {
+                localStorage.setItem('bw', JSON.stringify(v))
+            },
+            rotated(v) {
+                localStorage.setItem('rotated', JSON.stringify(v))
             }
         },
     });

@@ -1,24 +1,14 @@
-from pydantic import BaseModel, Field
+from pydantic import BaseModel
 
 
 class Card(BaseModel):
     word: str  # word
     team: int  # team_id
-    is_opened: int  # is_opened
+    is_opened: bool  # is_opened
 
 
 class FullGameState(BaseModel):
     name: str  # name of a game
     cards: list[Card]  # cards in game
-
-
-class RestrictesCard(BaseModel):
-    word: str  # word
-    team: int | None  # team_id
-    is_opened: int
-
-
-class RestrictedGameState(BaseModel):
-    name: str  # name of a game
-    cards: list[RestrictesCard]  # cards in game
-    cards_left: list[int]
+    winner: int | None
+    score: list[int]

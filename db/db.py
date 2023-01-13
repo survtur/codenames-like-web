@@ -20,7 +20,6 @@ class GamesDb:
     def _conn(self) -> sqlite3.Connection:
         if self.__connection is None:
             exist = os.path.exists(self._file)
-            print(os.path.abspath(self._file))
             self.__connection = sqlite3.connect(self._file)
             if not exist:
                 self._initialise_db()
