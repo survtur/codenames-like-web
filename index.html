@@ -11,159 +11,135 @@
     <style>
 
 
-        @import url('https://fonts.googleapis.com/css2?family=PT+Sans+Narrow&display=swap');
+		@import url('https://fonts.googleapis.com/css2?family=PT+Sans+Narrow&display=swap');
 
-        #wrapper {
-            font-family: 'PT Sans Narrow', sans-serif;
-            display: flex;
-            flex-direction: column;
-            flex-wrap: nowrap;
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            top: 0;
-        }
+		#wrapper {
+			font-family: 'PT Sans Narrow', sans-serif;
+			display: flex;
+			flex-direction: column;
+			flex-wrap: nowrap;
+			position: absolute;
+			bottom: 0;
+			left: 0;
+			right: 0;
+			top: 0;
+		}
 
-        @media screen and (orientation: portrait) {
-            #wrapper.rotated {
-                transform: rotate(90deg);
-                transform-origin: top left;
-                width: 100vh;
-                height: 100vw;
-                left: 100vw;
-                padding-bottom: 100vh;
-            }
-        }
-
-
-        #scores {
-            display: flex;
-            flex-direction: row;
-        }
-
-        #scores .score {
-            flex-grow: 1;
-            flex-basis: 0;
-            text-align: center;
-            font-size: 12vh;
-        }
-
-        #startMenu {
-            display: flex;
-            flex-direction: row
-        }
-
-        #blinker {
-            position: fixed;
-            top: 0;
-            right: 0;
-            font-size: 5px;
-        }
-
-        #cardField {
-            display: flex;
-            flex-direction: column;
-            flex-wrap: nowrap;
-            flex-grow: 1;
-            margin: min(1vw, 1vh);
-            background-color: #eee;
-        }
-
-        .cardRow {
-            flex-grow: 1;
-            flex-basis: 0;
-            display: flex;
-            flex-wrap: nowrap;
-        }
+		@media screen and (orientation: portrait) {
+			#wrapper.rotated {
+				transform: rotate(90deg);
+				transform-origin: top left;
+				width: 100vh;
+				height: 100vw;
+				left: 100vw;
+				padding-bottom: 100vh;
+			}
+		}
 
 
-        .card {
-            transition: 0.1s;
-            padding: 0 1vw;
-            flex-grow: 1;
-            flex-basis: 0;
-            background-color: #f8f8f8;
-            border-radius: 5px;
-            margin: max(0.5vw, 0.5vh);
-            color: #333;
-            box-shadow: 0 0.05em 0.1em rgb(0, 0, 0, 0.4);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: min(5vw, 5vh);
-            line-height: 1;
-            text-transform: capitalize;
-            user-select: none;
-            text-align: center;
-            word-wrap: anywhere;
-        }
+		#scores {
+			display: flex;
+			flex-direction: row;
+		}
 
-        .team-2 {
-            background-color: black;
-            color: #cbcbcb
-        }
+		#scores .score {
+			flex-grow: 1;
+			flex-basis: 0;
+			text-align: center;
+			font-size: 12vh;
+		}
 
-        .team-1 {
-            color: #443;
-            background-color: #eaead4
-        }
+		#startMenu {
+			display: flex;
+			flex-direction: row
+		}
 
-        .team0 {
-            color: #733;
-            background-color: lightpink
-        }
+		#blinker {
+			position: fixed;
+			top: 0;
+			right: 0;
+			font-size: 5px;
+		}
 
-        .team1 {
-            color: #226;
-            background-color: lightskyblue
-        }
+		#cardField {
+			display: flex;
+			flex-direction: column;
+			flex-wrap: nowrap;
+			flex-grow: 1;
+			margin: min(1vw, 1vh);
+			background-color: #eee;
+		}
 
-        .bw .word {
-            background-color: rgba(255, 255, 255, 80%);
-        }
+		.cardRow {
+			flex-grow: 1;
+			flex-basis: 0;
+			display: flex;
+			flex-wrap: nowrap;
+		}
 
-        .bw .team-2 .word {
-            background-color: #000;
-            color: #fff
-        }
+		.card {
+			transition: 0.1s;
+			padding: 0 1vw;
+			flex-grow: 1;
+			flex-basis: 0;
+			background-color: #f8f8f8;
+			border-radius: 5px;
+			margin: max(0.5vw, 0.5vh);
+			color: #333;
+			box-shadow: 0 0.05em 0.1em rgb(0, 0, 0, 0.4);
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			font-size: min(5vw, 5vh);
+			line-height: 1;
+			text-transform: capitalize;
+			user-select: none;
+			text-align: center;
+			word-wrap: anywhere;
+		}
 
-        .bw .team0 {
-            background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAAICAYAAADED76LAAAAMUlEQVQYV2NkwA/+M+KR/w+UY8SlACwJ0oxNAVwSmwIUSXQFGJLICrBKwhTglAQpAAAY5AgIyRpU6AAAAABJRU5ErkJggg==);
-        }
+		.team-2 { background-color: black;color: #cbcbcb}
+		.team-1 {color: #443; background-color: #eaead4}
+		.team0 { color: #733; background-color: lightpink }
+		.team1 { color: #226; background-color: lightskyblue }
+		.team2 { color: #131; background-color: lightgreen }
 
-        .bw .team1 {
-            background: #aaa;
-        }
-
-        .bw .team-1 {
-            background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAAIUlEQVQYV2NkIBIwEqmOgSKF/4G2YBhAkYlYnT0ETPwPABZzAgr9qxx+AAAAAElFTkSuQmCC);
-        }
+		.bw .word {background-color: rgba(255, 255, 255, 80%);}
+		.bw .team-2 .word { background-color: #000; color: #fff }
+		.bw .team-1 {background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAAIUlEQVQYV2NkIBIwEqmOgSKF/4G2YBhAkYlYnT0ETPwPABZzAgr9qxx+AAAAAElFTkSuQmCC);}
+		.bw .team0 { background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAAICAYAAADED76LAAAAMUlEQVQYV2NkwA/+M+KR/w+UY8SlACwJ0oxNAVwSmwIUSXQFGJLICrBKwhTglAQpAAAY5AgIyRpU6AAAAABJRU5ErkJggg==);}
+		.bw .team1 {background: #aaa;}
 
 
-        .captain .card.opened:not(.team-2) {
-            opacity: 0.3;
-        }
+		.captain .card.opened:not(.team-2) { opacity: 0.3;}
 
-        .captain .card .word{
-            user-select: none;
-        }
+		.captain .card .word { user-select: none;}
 
-        .captain .card.team-1 {
-            background: white;
-        }
+		.captain .card.team-1 { background: white;}
 
-        .card:hover {
-            transition: 0.1s;
-            box-shadow: 0 0.01em 0.4em #000;
-            filter: brightness(110%);
-        }
+		.card:hover {
+			transition: 0.1s;
+			box-shadow: 0 0.01em 0.4em #000;
+			filter: brightness(110%);
+		}
 
-        .card.almost {
-            transition: 1s cubic-bezier(0.0, 1, 0.6, 1.0)
-            transform: perspective(12cm) rotate3d(1, 0, 0, 60deg);
-            box-shadow: 0 40px 20px rgba(0,0,0,70%);
-        }
+		.card.almost {
+			transition: 1s cubic-bezier(0.0, 0.4, 0.5, 0.5);
+			animation: ready 0.3s infinite 1s;
+			transform: perspective(12cm) rotate3d(1, 0, 0, 60deg);
+			box-shadow: 0 40px 20px rgba(0, 0, 0, 70%);
+		}
+
+		@keyframes ready {
+			0% { transform: perspective(12cm) rotate3d(1, 0, 0, 60deg) }
+			50% { transform: perspective(12cm) rotate3d(1, 0, 0, 64deg) }
+			100% { transform: perspective(12cm) rotate3d(1, 0, 0, 60deg) }
+		}
+
+		.card.opening {
+			transition: 0.5s;
+			transform: perspective(12cm) rotate3d(1, 0, 0, 90deg);
+		}
 
 
     </style>
@@ -198,9 +174,10 @@
                 <div v-for="(row, rowIndex) in cardRows" :key="rowIndex" class="cardRow">
                     <div v-for="(card, cardIndex) in row" :key="cardIndex" class="card" :class="cardClass(card)"
                          ref="cards"
-                         @mousedown="mDown(card)" @mouseup="mUp(card)" @mouseout="mOut(card)"  @touchstart="mDown(card)"
-                     @touchend="mUp(card)"  @touchcancel="mOut(card)"  @touchmove="tMove($event, cardIndex)">
-                        <span class="word" :style="{fontSize: cardFontScale + '%'}" style="pointer-events: none">{{card.word}}</span>
+                         @mousedown="mDown(card)" @mouseup="mUp(card)" @mouseout="mOut(card)" @touchstart="mDown(card)"
+                         @touchend="mUp(card)" @touchcancel="mOut(card)" @touchmove="tMove($event, cardIndex)">
+                        <span class="word" :style="{fontSize: cardFontScale + '%'}"
+                              style="pointer-events: none">{{card.word}}</span>
                     </div>
                 </div>
             </div>
@@ -214,6 +191,8 @@
 </div>
 
 <script>
+
+    const openCardSound = new Audio("data:audio/mp3;base64,/+NIxAAAAAAAAAAAAFhpbmcAAAAPAAAABAAAAtAAKioqKioqKioqKioqKioqKioqKioqKioqgICAgICAgICAgICAgICAgICAgICAgICAgNXV1dXV1dXV1dXV1dXV1dXV1dXV1dXV1dX/////////////////////////////////AAAAOUxBTUUzLjEwMAIeAAAAAAAAAAAUCCQDfiIAAAgAAALQ7fkhYwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA/+MYxAAK2AK+eUEQAABuAAAjIB/8H+XD/////4IAgCH/V+D4Pv8HwQcJwfBwEAx+XB8Hw/9AY8PqAEEkgAAFlkSaZP/8yAXq/+MoxA8h46LSWYKQAohnMZ05a///////0ay6ksxMjZf9fRRUigZUklGSRgRYgRMoCzhZoY1AknU7rMz5FyfBrn6MyRULOBEpBTVFEmTIni8tRNEyToPUmDQuGk0ZkGdCkmXVLRdFjE4RAaBPkVMnIaTRPE0Yl0u//0MmCc/0EK3dEsGwW7qAQDv/jYJ/jEF//+MoxAohc1qBQYGoAOlU3//+ir//12dJf///6RiYHCueICRxNnyKj6/+v/80IMNUZ0bIsoL9BkcBoAACBMGoiAzenQMAwUDToAosovJrPCziMBMFgZYVYGKykBjkJf9i8Q0mTQAUNjLADAUIAANkG4gTAoNg4DBAzAx0G/8N+HOTKSKRMuTLeF4Gf////////+MYxAcMoyWAEcAoA/////////zPUrU/qVQ6KsJB4WdQGAIDHAUAQKQBgFAEOkDwBCyh0PCxuisqTEFNRTMuMTAwqqqqqqqq");
 
     function isTouchEventWithElement(event, element) {
         const item = event.changedTouches.item(0);
@@ -285,14 +264,24 @@
         methods: {
             mDown(card) {
                 console.log("DOWN: " + card.word);
-                card.almost = true;
+                if (!card.is_opened) {
+                    card.almost = true;
+                    card.mouseDownStart = new Date();
+                }
             },
             mOut(card) {
                 console.log("OUT: " + card.word);
                 card.almost = false;
+                card.mouseDownStart = false;
             },
             mUp(card) {
                 console.log("UP: " + card.word)
+                if (card.mouseDownStart) {
+                    const deltaMs = new Date() - card.mouseDownStart;
+                    if (deltaMs > 1000) {
+                        this.openCard(card);
+                    }
+                }
                 card.almost = false;
             },
             tMove(e, i) {
@@ -305,6 +294,13 @@
                 if (c.is_opened) {
                     cls.push('opened')
                 }
+                if (c.is_opening) {
+                    cls.push('opening')
+                }
+                if (c.just_opened) {
+                    cls.push('just-opened')
+                }
+
                 if (c.is_opened || this.isCaptain) {
                     cls.push('team' + c.team)
                 }
@@ -315,7 +311,7 @@
                 return cls.join(" ")
             },
             initGame() {
-                const rules = {cards_set: 0, cards_count: 25, team_cards_count: [9, 8]};
+                const rules = {cards_set: 0, cards_count: 25, team_cards_count: [9, 8,]};
                 this.net.needConnection = true;
                 this.net.queueToSend.push(JSON.stringify({action: 'init', rules: rules}));
             },
@@ -329,10 +325,17 @@
                     return
                 }
                 const i = this.state.cards.indexOf(card);
+                card.is_opening = true;
+                openCardSound.play()
+                setTimeout(() => {
+                    card.is_opening = false;
+                    card.is_opened = true;
+                }, 500)
                 this.net.queueToSend.push(JSON.stringify({action: 'open', card: i, game: this.gameName}))
             },
             connectWs() {
-                this.net.websocket = new WebSocket("ws://localhost:8000/ws");
+                const wsPotocol = location.protocol === 'https:' ? 'wss:' : 'ws:'
+                this.net.websocket = new WebSocket(wsPotocol + "//localhost:8000/ws");
                 this.net.connectionState = WebSocket.CONNECTING;
                 this.net.websocket.onopen = () => {
                     this.net.connectionState = this.net.websocket.readyState;
@@ -355,6 +358,7 @@
                 if (data.action === 'init') {
                     this.gameName = data.game
                     this.showEnterForm = true
+                    window.location.hash = data.game
                 } else if (data.action === 'state') {
                     this.state = data.state
                     this.gameName = data.game
