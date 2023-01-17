@@ -11,164 +11,256 @@
     <style>
 
 
-		@import url('https://fonts.googleapis.com/css2?family=PT+Sans+Narrow&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=PT+Sans+Narrow&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
 
-		#wrapper {
-			font-family: 'PT Sans Narrow', sans-serif;
-			display: flex;
-			flex-direction: column;
-			flex-wrap: nowrap;
-			position: absolute;
-			bottom: 0;
-			left: 0;
-			right: 0;
-			top: 0;
-		}
+        #wrapper {
+            font-family: Roboto, sans-serif;
+            display: flex;
+            flex-direction: column;
+            flex-wrap: nowrap;
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            top: 0;
+        }
 
-		@media screen and (orientation: portrait) {
-			#wrapper.rotated {
-				transform: rotate(90deg);
-				transform-origin: top left;
-				width: 100vh;
-				height: 100vw;
-				left: 100vw;
-				padding-bottom: 100vh;
-			}
-		}
+        .crown-icon-1555642 {
+            background-image: url(data:image/svg;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0OCIgaGVpZ2h0PSI0OCIgZmlsbD0ibm9uZSI+PHBhdGggZmlsbD0ibm9uZSIgZD0iTTAgMGg0OHY0OEgweiIvPjxwYXRoIGZpbGw9IiMyRjg4RkYiIHN0cm9rZT0iIzAwMCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIgc3Ryb2tlLXdpZHRoPSI0IiBkPSJNOSA0MCA0IDE3bDEwIDVMMjQgOGwxMCAxNCAxMC01LTUgMjNIOVoiLz48cGF0aCBmaWxsPSIjNDNDQ0Y4IiBzdHJva2U9IiNmZmYiIHN0cm9rZS1saW5lam9pbj0icm91bmQiIHN0cm9rZS13aWR0aD0iNCIgZD0iTTI0IDMzYTQgNCAwIDEgMCAwLTggNCA0IDAgMCAwIDAgOFoiLz48L3N2Zz4=);
+        }
 
+        #wrapper.rotated {
+            transform: rotate(90deg);
+            transform-origin: top left;
+            width: 100vh;
+            height: 100vw;
+            left: 100vw;
+            padding-bottom: 100vh;
+        }
 
-		#scores {
-			display: flex;
-			flex-direction: row;
-		}
+        #overlay {
+            background: rgba(0, 0, 0, 50%);
+            bottom: 0;
+            left: 0;
+            right: 0;
+            top: 0;
+            position: absolute;
+            z-index: 100;
+        }
 
-		#scores .score {
-			flex-grow: 1;
-			flex-basis: 0;
-			text-align: center;
-			font-size: 12vh;
-		}
+        #overlay > div {
+            background-color: white;
+            border-radius: 1em;
+            padding: 1em;
+            margin: 1em;
+            box-shadow: 0 1em 1em rgba(0, 0, 0, 50%);
+        }
 
-		#startMenu {
-			display: flex;
-			flex-direction: row
-		}
+        #scores {
+            display: flex;
+            flex-direction: row;
+        }
 
-		#blinker {
-			position: fixed;
-			top: 0;
-			right: 0;
-			font-size: 5px;
-		}
+        .score {
+            flex-grow: 1;
+            flex-basis: 0;
+            text-align: center;
+            font-size: 12vh;
+        }
 
-		#cardField {
-			display: flex;
-			flex-direction: column;
-			flex-wrap: nowrap;
-			flex-grow: 1;
-			margin: min(1vw, 1vh);
-			background-color: #eee;
-		}
+        #menuBtn {
+            transition: 0.1s margin-top;
+            background-color: black;
+            color: white;
+            border: none;
+        }
+        #menuBtn:hover {
+            margin-top: 0.2em;
+            background-color: #333;
+        }
+        #menuBtn:active {
+            margin-top: 0.5em
+        }
 
-		.cardRow {
-			flex-grow: 1;
-			flex-basis: 0;
-			display: flex;
-			flex-wrap: nowrap;
-		}
+        #startMenu {
+            display: flex;
+            flex-direction: row
+        }
 
-		.card {
-			transition: 0.1s;
-			padding: 0 1vw;
-			flex-grow: 1;
-			flex-basis: 0;
-			background-color: #f8f8f8;
-			border-radius: 5px;
-			margin: max(0.5vw, 0.5vh);
-			color: #333;
-			box-shadow: 0 0.05em 0.1em rgb(0, 0, 0, 0.4);
-			display: flex;
-			align-items: center;
-			justify-content: center;
-			font-size: min(5vw, 5vh);
-			line-height: 1;
-			text-transform: capitalize;
-			user-select: none;
-			text-align: center;
-			word-wrap: anywhere;
-		}
+        #blinker {
+            position: fixed;
+            top: 0;
+            right: 0;
+            font-size: 1rem;
+            z-index: 200;
+            pointer-events: none;
+        }
 
-		.team-2 { background-color: black;color: #cbcbcb}
-		.team-1 {color: #443; background-color: #eaead4}
-		.team0 { color: #733; background-color: lightpink }
-		.team1 { color: #226; background-color: lightskyblue }
-		.team2 { color: #131; background-color: lightgreen }
+        #cardField {
+            display: flex;
+            flex-direction: column;
+            flex-wrap: nowrap;
+            flex-grow: 1;
+            padding: min(1vw, 1vh);
+            background-color: #eee;
+        }
 
-		.bw .word {background-color: rgba(255, 255, 255, 80%);}
-		.bw .team-2 .word { background-color: #000; color: #fff }
-		.bw .team-1 {background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAAIUlEQVQYV2NkIBIwEqmOgSKF/4G2YBhAkYlYnT0ETPwPABZzAgr9qxx+AAAAAElFTkSuQmCC);}
-		.bw .team0 { background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAAICAYAAADED76LAAAAMUlEQVQYV2NkwA/+M+KR/w+UY8SlACwJ0oxNAVwSmwIUSXQFGJLICrBKwhTglAQpAAAY5AgIyRpU6AAAAABJRU5ErkJggg==);}
-		.bw .team1 {background: #aaa;}
+        .cardRow {
+            flex-grow: 1;
+            flex-basis: 0;
+            display: flex;
+            flex-wrap: nowrap;
+        }
 
+        .card {
+            transition: 0.1s;
+            padding: 0 1vw;
+            flex-grow: 1;
+            flex-basis: 0;
+            background-color: #f8f8f8;
+            border-radius: 5px;
+            margin: max(0.5vw, 0.5vh);
+            color: #333;
+            box-shadow: 0 0.05em 0.1em rgb(0, 0, 0, 0.4);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: min(4vw, 4vh);
+            line-height: 1;
+            text-transform: capitalize;
+            user-select: none;
+            text-align: center;
+            word-wrap: anywhere;
+            font-family: 'PT Sans Narrow', sans-serif;
+        }
 
-		.captain .card.opened:not(.team-2) { opacity: 0.3;}
+        .team-2 { background-color: black;color: #cbcbcb}
+        .team-1 {color: #443; background-color: #eaead4}
+        .team0 { color: #733; background-color: lightpink }
+        .team1 { color: #226; background-color: lightskyblue }
+        .team2 { color: #131; background-color: lightgreen }
+        .team3 { color: saddlebrown; background-color: yellow }
 
-		.captain .card .word { user-select: none;}
+        .bw .word {background-color: rgba(255, 255, 255, 80%);}
+        .bw .team-2 .word { background-color: #000; color: #fff }
+        .bw .team-1 {background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAAIUlEQVQYV2NkIBIwEqmOgSKF/4G2YBhAkYlYnT0ETPwPABZzAgr9qxx+AAAAAElFTkSuQmCC);}
+        .bw .team0 { background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAAICAYAAADED76LAAAAMUlEQVQYV2NkwA/+M+KR/w+UY8SlACwJ0oxNAVwSmwIUSXQFGJLICrBKwhTglAQpAAAY5AgIyRpU6AAAAABJRU5ErkJggg==);}
+        .bw .team1 {background: #aaa;}
 
-		.captain .card.team-1 { background: white;}
+        .captain .card {pointer-events: none}
+        .captain .card.opened:not(.team-2) { opacity: 0.3;}
+        .captain .card .word { user-select: none;}
+        .captain .card.team-1 { background: white;}
 
-		.card:hover {
-			transition: 0.1s;
-			box-shadow: 0 0.01em 0.4em #000;
-			filter: brightness(110%);
-		}
+        .card:hover {
+            transition: 0.1s;
+            box-shadow: 0 0.01em 0.4em #000;
+            filter: brightness(110%);
+        }
 
-		.card.almost {
-			transition: 1s cubic-bezier(0.0, 0.4, 0.5, 0.5);
-			animation: ready 0.3s infinite 1s;
-			transform: perspective(12cm) rotate3d(1, 0, 0, 60deg);
-			box-shadow: 0 40px 20px rgba(0, 0, 0, 70%);
-		}
+        .card.almost {
+            transition: 1s cubic-bezier(0.0, 0.4, 0.5, 0.5);
+            animation: ready 0.3s infinite 1s;
+            transform: perspective(12cm) rotate3d(1, 0, 0, 40deg);
+            box-shadow: 0 40px 20px rgba(0, 0, 0, 70%);
+        }
 
-		@keyframes ready {
-			0% { transform: perspective(12cm) rotate3d(1, 0, 0, 60deg) }
-			50% { transform: perspective(12cm) rotate3d(1, 0, 0, 64deg) }
-			100% { transform: perspective(12cm) rotate3d(1, 0, 0, 60deg) }
-		}
+        @keyframes ready {
+            0% { transform: perspective(12cm) rotate3d(1, 0, 0, 40deg) }
+            50% { transform: perspective(12cm) rotate3d(1, 0, 0, 35deg) }
+            100% { transform: perspective(12cm) rotate3d(1, 0, 0, 40deg) }
+        }
 
-		.card.opening {
-			transition: 0.5s;
-			transform: perspective(12cm) rotate3d(1, 0, 0, 90deg);
-		}
+        .card.opening {
+            transition: 0.5s;
+            transform: perspective(12cm) rotate3d(1, 0, 0, 90deg);
+        }
+
+        .locale {
+            float: right;
+        }
+
+        .locale > a {
+            margin: 0 0.5em
+        }
+
+        label {
+            margin-right: 0.5em;
+        }
 
 
     </style>
 </head>
 <body>
 <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+<script src="https://unpkg.com/vue-i18n@9"></script>
 
 <div id="app">
     <div :class="{bw: bw, captain: isCaptain, rotated: rotated}" id="wrapper">
+
         <div id="blinker">
             <span :style="{color: connectionStyle}">●</span><span
                 :style="{color:  unansweredCount ? 'red' : ''}">●</span>
         </div>
-        <div id="gameEndPanel" v-if="state && state.winner !== null">
-            WINNER: {{state.winner}}
-        </div>
-        <div id="startMenu">
-            <div>
-                <button type="button" @click="initGame">Создать игру</button>
+
+        <div id="overlay" v-if="overlay">
+            <div v-if="overlay === 'startMenu'">
+                <div>
+                    <div class="locale">
+                        <a href="#" @click.prevent="$i18n.locale='ru'">РУС</a>
+                        <a href="#" @click.prevent="$i18n.locale='en'">ENG</a>
+                    </div>
+                    <h2>{{$t('newGame')}}</h2>
+                    <div>
+                        <label for="fieldSize">{{$t('field')}} </label>
+                        <select id="fieldSize" v-model.number="newGame.cardsCount">
+                            <option :value="30">6×5</option>
+                            <option :value="25">5×5 - {{$t('standard')}}</option>
+                            <option :value="20">5×4</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label for="cardsSet">{{$t('set')}} </label>
+                        <select id="cardsSet" v-model.number="newGame.cardsSet[$i18n.locale]">
+                            <option v-for="w in availableWordLists" :value="w[0]">{{w[1]}}</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label for="teamsCount">{{$t('teams')}} </label>
+                        <select id="teamsCount" v-model.number="newGame.teamsCount">
+                            <option :value="1">1 - {{$t('training')}}</option>
+                            <option :value="2">2 - {{$t('standard')}}</option>
+                            <option :value="3">3</option>
+                            <option :value="4">4</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label for="blackCards">{{$t('blacks')}} </label>
+                        <select id="blackCards" v-model.number="newGame.blackCards">
+                            <option :value="0">0</option>
+                            <option :value="1">1 - {{$t('standard')}}</option>
+                            <option :value="-1">{{newGame.teamsCount}}</option>
+                        </select>
+                    </div>
+                    <button type="button" @click="initGame">{{$t('create')}}</button>
+                </div>
+                <hr/>
+                <div>
+                    <button type="button" @click="showEnterForm = true">{{$t('join')}}</button>
+                    <template v-if="showEnterForm || gameName">
+                        <input type="text" v-model.trim="gameName"/>
+                        <button type="button" @click="joinGame(true)" :enabled="!!gameName">{{$t('asCaptain')}}</button>
+                        <button type="button" @click="joinGame(false)" :enabled="!!gameName">{{$t('asGuesser')}}
+                        </button>
+                    </template>
+                </div>
             </div>
-            <div>
-                <button type="button" @click="showEnterForm = true">Войти игру</button>
-                <template v-if="showEnterForm || gameName">
-                    <input type="text" v-model.trim="gameName"/>
-                    <button type="button" @click="joinGame(true)" :enabled="!!gameName">Капитан</button>
-                    <button type="button" @click="joinGame(false)" :enabled="!!gameName">Игрок</button>
-                </template>
+            <div v-if="overlay === 'gameMenu'">
+                <h1>Код игры: {{gameName}}</h1>
             </div>
         </div>
+
         <template v-if="state">
             <div id="cardField">
                 <div v-for="(row, rowIndex) in cardRows" :key="rowIndex" class="cardRow">
@@ -176,14 +268,16 @@
                          ref="cards"
                          @mousedown="mDown(card)" @mouseup="mUp(card)" @mouseout="mOut(card)" @touchstart="mDown(card)"
                          @touchend="mUp(card)" @touchcancel="mOut(card)" @touchmove="tMove($event, cardIndex)">
-                        <span class="word" :style="{fontSize: cardFontScale + '%'}"
-                              style="pointer-events: none">{{card.word}}</span>
+                            <span class="word" :style="{fontSize: cardFontScale + '%'}"
+                                  style="pointer-events: none">{{card.word}}</span>
                     </div>
                 </div>
             </div>
             <div id="scores">
+                <button type="button" id="menuBtn" @click="menu">Меню<br/>…</button>
                 <div class="score team0">{{state.score[0]}}</div>
-                <div class="score team1">{{state.score[1]}}</div>
+                <div v-for="(s,t) in state.score.slice(1)" class="score" :class="'team' + (t+1)">{{s}}</div>
+                <div v-if="state.winner === -2" class="score team-2">!!!</div>
             </div>
         </template>
     </div>
@@ -204,8 +298,47 @@
             rect.bottom > item.clientY;
     }
 
-    const {createApp} = Vue
+    const messages = {
+        ru: {
+            asCaptain: "Капитан",
+            asGuesser: "Игрок",
+            field: "Поле",
+            set: "Карточки",
+            standard: "стандарт",
+            teams: "Команды",
+            training: "тренировка",
+            blacks: "Чёрные карты",
+            newGame: "Новая игра",
+            create: "Создать",
+            join: "Войти в игру"
+        },
+        en: {
+            asCaptain: "Captain",
+            asGuesser: "Player",
+            field: "Table size",
+            set: "Cards set",
+            standard: "standard",
+            teams: "Teams",
+            training: "training",
+            blacks: "Black cards",
+            newGame: "New game",
+            create: "Create",
+            join: "Join game"
+        }
+    }
 
+    const wordsLists = [
+        [0, "Стандартные 400", "ru"],
+        [1, "Default 400", "en"]
+    ];
+
+    const i18n = VueI18n.createI18n({
+        locale: 'ru',
+        fallbackLocale: 'en',
+        messages,
+    })
+
+    const {createApp} = Vue
     const app = createApp({
         data() {
             return {
@@ -218,10 +351,18 @@
                     needConnection: false,
                 },
 
+                newGame: {
+                    cardsCount: 25,
+                    cardsSet: {'ru': 0, 'en': 1},
+                    teamsCount: 2,
+                    blackCards: 1
+                },
+
                 showEnterForm: false,
+                overlay: 'startMenu',
+                closeOnJoin: false,
                 isCaptain: false,
                 gameName: window.location.hash.replace('#', ''),
-                hasWinner: false,
 
 
                 cardFontScale: 100,
@@ -233,6 +374,9 @@
             }
         },
         computed: {
+            availableWordLists() {
+                return wordsLists.filter(w => (w[2] === "" || w[2].indexOf(this.$i18n.locale) !== -1))
+            },
             connectionStyle() {
                 if (this.net.connectionState === WebSocket.OPEN) {
                     return "#0ea21a"
@@ -311,13 +455,22 @@
                 return cls.join(" ")
             },
             initGame() {
-                const rules = {cards_set: 0, cards_count: 25, team_cards_count: [9, 8,]};
+                const perTeam = Number.parseInt(Math.floor(this.newGame.cardsCount / (this.newGame.teamsCount + 1)));
+                const teamCardsCount = Array(this.newGame.teamsCount).fill(perTeam);
+                teamCardsCount[0] = teamCardsCount[0] + 1;
+                const rules = {
+                    cards_set: this.newGame.cardsSet[this.$i18n.locale],
+                    cards_count: this.newGame.cardsCount,
+                    team_cards_count: teamCardsCount,
+                    black_cards_count: this.newGame.blackCards === -1 ? (this.newGame.teamsCount - 1) : this.newGame.blackCards,
+                };
                 this.net.needConnection = true;
                 this.net.queueToSend.push(JSON.stringify({action: 'init', rules: rules}));
             },
             joinGame(asCap) {
                 this.isCaptain = asCap;
                 this.net.needConnection = true;
+                this.closeOverlayOnJoin = true;
                 this.net.queueToSend.push(JSON.stringify({action: 'join', game: this.gameName}))
             },
             openCard(card) {
@@ -363,11 +516,22 @@
                     this.state = data.state
                     this.gameName = data.game
                     window.location.hash = data.game
+                    if (this.closeOverlayOnJoin) {
+                        this.overlay = false
+                    }
                 }
 
+            },
+            menu() {
+                this.overlay = "gameMenu"
             }
         },
         watch: {
+            overlay(v) {
+                if (v) {
+                    this.closeOverlayOnJoin = false;
+                }
+            },
             shouldSend() {
                 if (this.net.queueToSend.length === 0) {
                     return
@@ -379,12 +543,6 @@
                     this.connectWs();
                 }
             },
-            hasWinner(v) {
-                if (v) {
-                    this.net.needConnection = false;
-                    this.net.websocket.close()
-                }
-            },
             bw(v) {
                 localStorage.setItem('bw', JSON.stringify(v))
             },
@@ -393,7 +551,8 @@
             }
         },
     });
-    app.mount('#app')
+    app.use(i18n);
+    app.mount('#app');
 </script>
 
 </body>
