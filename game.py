@@ -31,7 +31,7 @@ def _update_winner(s: FullGameState):
     """
     if s.winner is None:
         black_is_opened = [c.is_opened for c in s.cards if c.team == SpecialTeam.BLACK]
-        if black_is_opened and not any(black_is_opened):
+        if black_is_opened and all(black_is_opened):
             s.winner = SpecialTeam.BLACK
             return
 
