@@ -7,215 +7,9 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=PT+Sans+Narrow&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/milligram/1.4.1/milligram.css">
 
-    <style>
+    /** THIS COMMENT WILL BE REPLACED BY CSS-STYLE **/
 
-        @import url('https://fonts.googleapis.com/css2?family=PT+Sans+Narrow&display=swap');
-        @import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
-        h1, h2, h3 {
-            margin-bottom: 1rem;
-        }
-        #wrapper {
-            font-family: Roboto, sans-serif;
-            display: flex;
-            flex-direction: column;
-            flex-wrap: nowrap;
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            top: 0;
-        }
-
-        .trophy-bg {
-            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='-50 -50 612 612'%3E%3Cpath fill='%23eebf00' d='M273.39 430.3v-76.4h-42.21v76.4a23.5 23.5 0 0 1-23.5 23.5v22h89.99v-22h-.78a23.5 23.5 0 0 1-23.5-23.5z'/%3E%3Cpath fill='%23cca400' d='M231.18 348.57h41.85v47.41h-41.85z'/%3E%3Cpath fill='%23eebf00' d='M351.34 164.75v109.72c0 54.48-44.57 99.05-99.05 99.05s-99.06-44.57-99.06-99.05V164.75h198.1z'/%3E%3Cg fill='%23cca400'%3E%3Cpath d='M321.12 164.75v79.5c0 54.48-44.57 99.05-99.05 99.05a98.28 98.28 0 0 1-53.22-15.62c17.65 27.51 48.5 45.84 83.44 45.84 54.48 0 99.05-44.57 99.05-99.05V164.75h-30.22z' opacity='.47'/%3E%3Cpath d='m35.4 90.98 11.88-27.79 19.9 22.75 30.1 2.72-15.49 25.96 6.72 29.47-29.48-6.72-25.95 15.5-2.72-30.11L7.6 102.87zM233.84 44.1l22-34.78 21.81 34.9 39.89 10.17-26.46 31.53 2.65 41.07-38.16-15.41-38.25 15.21 2.87-41.06-26.28-31.67zM459 81.63l28.06-11.25-2.03 30.16 19.37 23.21-29.31 7.39L459 156.73l-16.09-25.59-29.31-7.39 19.36-23.21-2.02-30.16z'/%3E%3C/g%3E%3Cpath fill='%23663c1d' d='M188.37 475.81h127.74v26.89H188.37z'/%3E%3Cpath fill='%23cca400' d='M153.24 164.75h198.11v32.92H153.24z'/%3E%3Cpath fill='%2356361d' d='M188.37 489.24h127.74v13.44H188.37z'/%3E%3Cpath fill='%23fff' d='M176.8 337.88a99.99 99.99 0 0 0 34.22 26.36V164.75H176.8v173.13z' opacity='.22'/%3E%3Cpath d='M93.88 149.47a7.6 7.6 0 0 0 2.04-7.07l-6.04-26.5 13.93-23.34a7.6 7.6 0 0 0-5.84-11.47L70.9 78.65 53 58.18a7.6 7.6 0 0 0-12.7 2.02L29.6 85.19 4.61 95.88a7.6 7.6 0 0 0-2.01 12.71l20.46 17.9 2.45 27.06a7.6 7.6 0 0 0 11.47 5.84l23.33-13.93 26.5 6.04a7.6 7.6 0 0 0 7.07-2.03zm-19.5-33.16 4.02 17.68-17.68-4.03a7.6 7.6 0 0 0-5.58.88l-15.57 9.3-1.63-18.06a7.6 7.6 0 0 0-2.57-5.04L21.7 105.1l16.68-7.13a7.6 7.6 0 0 0 4-4l7.13-16.68 11.93 13.66a7.6 7.6 0 0 0 5.05 2.57l18.06 1.63-9.3 15.57a7.6 7.6 0 0 0-.89 5.59zM212.4 88.24l-2.66 38.02a7.6 7.6 0 0 0 10.4 7.6l35.4-14.09 35.34 14.28a7.6 7.6 0 0 0 10.44-7.54l-2.45-38.04 24.5-29.2a7.6 7.6 0 0 0-3.96-12.25L282.5 37.6l-20.2-32.32a7.6 7.6 0 0 0-6.43-3.57h-.02a7.6 7.6 0 0 0-6.43 3.54l-20.37 32.2-36.97 9.23a7.6 7.6 0 0 0-4.02 12.23l24.34 29.33zm23.28-36.76a7.6 7.6 0 0 0 4.59-3.31L255.8 23.6l15.4 24.65a7.6 7.6 0 0 0 4.58 3.34l28.16 7.18-18.68 22.27a7.6 7.6 0 0 0-1.76 5.37l1.87 29-26.95-10.88a7.6 7.6 0 0 0-5.66-.02l-27 10.75 2.02-29a7.61 7.61 0 0 0-1.73-5.38L207.48 58.5l28.2-7.03zM510.24 118.88 492.81 98l1.82-27.12a7.6 7.6 0 0 0-10.41-7.57L459 73.43l-25.23-10.1a7.6 7.6 0 0 0-10.42 7.56l1.82 27.12-17.41 20.87a7.6 7.6 0 0 0 3.98 12.24l26.35 6.65 14.47 23.01a7.6 7.6 0 0 0 12.87 0l14.47-23 26.36-6.66a7.6 7.6 0 0 0 3.98-12.24zm-37.01 4.9a7.6 7.6 0 0 0-4.58 3.32L459 142.45l-9.66-15.35a7.6 7.6 0 0 0-4.57-3.33l-17.59-4.43 11.62-13.93a7.6 7.6 0 0 0 1.75-5.38l-1.22-18.1 16.84 6.75a7.6 7.6 0 0 0 5.65 0l16.84-6.74-1.22 18.1a7.61 7.61 0 0 0 1.75 5.37l11.62 13.93-17.58 4.43zM381.95 176.55h-23v-11.8c0-4.2-3.41-7.6-7.61-7.6h-198.1a7.6 7.6 0 0 0-7.61 7.6v11.8h-23.01c-32.25 0-58.5 26.24-58.5 58.5s26.25 58.49 58.5 58.49h24.72a107 107 0 0 0 76.23 83.65v53.11c0 8.77-7.13 15.9-15.89 15.9a7.6 7.6 0 0 0-7.6 7.6v14.4h-11.71a7.6 7.6 0 0 0-7.6 7.6v26.89c0 4.2 3.4 7.6 7.6 7.6H316.1c4.2 0 7.6-3.4 7.6-7.6V475.8c0-4.2-3.4-7.6-7.6-7.6h-10.84v-14.4c0-4.2-3.4-7.6-7.6-7.6h-.78c-8.77 0-15.9-7.13-15.9-15.9v-53.1a107 107 0 0 0 76.24-83.66h24.72c32.25 0 58.5-26.25 58.5-58.5s-26.25-58.5-58.5-58.5zm-221.11-4.2h182.9v13.88h-182.9v-13.87zm-38.22 105.98c-23.87 0-43.29-19.42-43.29-43.29s19.42-43.28 43.29-43.28h23v82.7c0 1.3.04 2.59.09 3.87h-23.09zM308.5 495.08H195.97V483.4H308.51v11.68zm-18.43-34.43v7.55h-74.79v-7.74a31.15 31.15 0 0 0 23.5-30.16V381.8h27v48.51c0 14.8 10.4 27.23 24.29 30.35zm-37.78-94.73c-50.43 0-91.45-41.03-91.45-91.45v-73.03h182.9v73.03c0 50.42-41.03 91.45-91.46 91.45zm129.66-87.6h-23.09c.05-1.27.08-2.56.08-3.85v-82.72h23.01c23.87 0 43.29 19.42 43.29 43.3s-19.42 43.28-43.29 43.28z'/%3E%3C/svg%3E");
-            background-repeat: no-repeat;
-            background-position: center;
-        }
-
-        #wrapper.rotated {
-            transform: rotate(90deg);
-            transform-origin: top left;
-            width: 100vh;
-            height: 100vw;
-            left: 100vw;
-        }
-
-        #overlay {
-            background: rgba(0, 0, 0, 50%);
-            bottom: 0;
-            left: 0;
-            right: 0;
-            top: 0;
-            position: absolute;
-            z-index: 100;
-        }
-
-        #overlay > div {
-            background-color: white;
-            border-radius: 1em;
-            padding: 1em;
-            margin: 1em;
-            box-shadow: 0 1em 1em rgba(0, 0, 0, 50%);
-        }
-
-        #scores {
-            display: flex;
-            flex-direction: row;
-        }
-
-        .score {
-            flex-grow: 1;
-            flex-basis: 0;
-            text-align: center;
-            font-size: 12vh;
-        }
-
-        #menuBtn {
-            border: none;
-            border-radius: 0;
-            color: #444;
-            background-color: #eee;;
-            height: 100%;
-            padding: 1em;
-        }
-
-        #menuBtn:hover, #menuBtn:active {
-            background-color: #ddd;
-        }
-
-        #startMenu {
-            display: flex;
-            flex-direction: row
-        }
-
-        #blinker {
-            position: fixed;
-            top: 0;
-            right: 0;
-            font-size: 1rem;
-            z-index: 200;
-            pointer-events: none;
-        }
-
-        #cardField {
-            display: flex;
-            flex-direction: column;
-            flex-wrap: nowrap;
-            flex-grow: 1;
-            padding: min(1vw, 1vh);
-            background-color: #eee;
-        }
-
-        .cardRow {
-            flex-grow: 1;
-            flex-basis: 0;
-            display: flex;
-            flex-wrap: nowrap;
-        }
-
-        .card {
-            transition: 0.1s;
-            padding: 0 1vw;
-            flex-grow: 1;
-            flex-basis: 0;
-            background-color: #f8f8f8;
-            border-radius: 5px;
-            margin: max(0.5vw, 0.5vh);
-            color: #333;
-            box-shadow: 0 0.05em 0.1em rgb(0, 0, 0, 0.4);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: min(4vw, 4vh);
-            line-height: 1;
-            text-transform: capitalize;
-            user-select: none;
-            text-align: center;
-            word-wrap: anywhere;
-            /*font-family: 'PT Sans Narrow', sans-serif;*/
-        }
-
-        .card.opened:not(.team-2) { opacity: 0.8}
-
-        .team-2 { background-color: black;color: #cbcbcb}
-        .team-1 {color: #443; background-color: #eaead4}
-        .team0 { color: #733; background-color: lightpink }
-        .team1 { color: #226; background-color: lightskyblue }
-        .team2 { color: #131; background-color: lightgreen }
-        .team3 { color: saddlebrown; background-color: yellow }
-
-        .greyscale .word {background-color: rgba(255, 255, 255, 80%);}
-        .greyscale .team-2 .word { background-color: #000; color: #fff }
-        .greyscale .team-1 {background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAAIUlEQVQYV2NkIBIwEqmOgSKF/4G2YBhAkYlYnT0ETPwPABZzAgr9qxx+AAAAAElFTkSuQmCC);}
-        .greyscale .team0 { background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAAICAYAAADED76LAAAAMUlEQVQYV2NkwA/+M+KR/w+UY8SlACwJ0oxNAVwSmwIUSXQFGJLICrBKwhTglAQpAAAY5AgIyRpU6AAAAABJRU5ErkJggg==);}
-        .greyscale .team1 {background: #aaa;}
-
-        .captain .card {pointer-events: none}
-        .captain .card.opened:not(.team-2) { opacity: 0.3;}
-        .captain .card .word { user-select: none;}
-        .captain .card.team-1 { background: white;}
-
-        .card:hover {
-            transition: 0.1s;
-            box-shadow: 0 0.01em 0.4em #000;
-            filter: brightness(110%);
-        }
-
-        .card.almost {
-            transition: 1s cubic-bezier(0.0, 0.4, 0.5, 0.5);
-            animation: ready 0.3s infinite 1s;
-            transform: perspective(12cm) rotate3d(1, 0, 0, 40deg);
-            box-shadow: 0 40px 20px rgba(0, 0, 0, 70%);
-        }
-
-        @keyframes ready {
-            0% { transform: perspective(12cm) rotate3d(1, 0, 0, 40deg) }
-            50% { transform: perspective(12cm) rotate3d(1, 0, 0, 35deg) }
-            100% { transform: perspective(12cm) rotate3d(1, 0, 0, 40deg) }
-        }
-
-        .card.opening {
-            transition: 0.5s;
-            transform: perspective(12cm) rotate3d(1, 0, 0, 90deg);
-        }
-
-        .locale {
-            float: right;
-        }
-
-        .locale > a {
-            margin: 0 0.5em;
-            font-size: smaller
-        }
-
-        label {
-            margin-right: 0.5em;
-        }
-        .settings {
-            margin-bottom: 1em;
-        }
-
-        .settings > div {
-            display: flex;
-            margin-bottom: 0.8em;
-            flex-wrap: wrap;
-        }
-        .settings > div > * {
-            margin-top: 0;
-            margin-bottom: 0;
-        }
-
-        select {
-            width: auto;
-            height: auto;
-            padding-top: 0;
-            padding-bottom: 0;
-        }
-
-
-    </style>
 </head>
 <body>
 <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
@@ -322,7 +116,10 @@
                 <template v-for="(s,t) in state.score">
                     <div v-if="state.winner === t" class="score trophy-bg" :class="'team' + t">&nbsp;</div>
                     <div v-else class="score" :class="'team' + t">{{s}}</div>
-                    <button v-if="t===0" type="button" id="menuBtn" @click="menu">{{$t('menu')}}<br/>…</button>
+                    <div v-if="t===0">
+                        <button type="button" id="menuBtn" @click="menu">{{$t('menu')}}<br/>…</button>
+                        <div v-for="c of blackCardsCount">{{c}}</div>
+                    </div>
                 </template>
             </div>
         </template>
@@ -363,7 +160,8 @@
             close: "Закрыть",
             gameCode: "Код игры",
             startMenu: "В начальное меню",
-            menu: "Меню"
+            menu: "Меню",
+            blackWins: "Команда, которая открыла чёрную карту, проиграла."
         },
         en: {
             asCaptain: "Captain",
@@ -383,7 +181,8 @@
             close: "Close",
             gameCode: "Game code",
             startMenu: "Main menu",
-            menu: "Menu"
+            menu: "Menu",
+            blackWins: "The team that revealed the black card lost."
         }
     }
 
@@ -434,7 +233,8 @@
         },
         computed: {
             blackCards() {
-                return this.state.cards.filter(c => c.team === -2);
+
+                return this.state ? this.state.cards.filter(c => c.team === -2) : [];
             },
             blackCardsCount() {
                 return this.blackCards.length
@@ -631,7 +431,7 @@
             fontScale(v) {
                 localStorage.setItem('fontScale', JSON.stringify(v))
             },
-            'state.winner': function(w) {
+            'state.winner': function (w) {
                 if (w !== null) {
                     this.net.needConnection = false;
                 }

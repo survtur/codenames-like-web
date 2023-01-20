@@ -9,14 +9,13 @@ from db.db import GamesDb
 from game import update_game_stats
 from schemas.game_state import FullGameState
 from schemas.rules import Rules
+from webpage import get_page
 
 app = FastAPI(docs_url=None, redoc_url=None)
 
-with open(Path(__file__).parent.joinpath('index.html')) as f:
-    page_html = f.read()
-
 manager = ConnectionManager()
 DB_PATH = Path("test.sqlite3")
+page_html = get_page()
 
 
 @app.get("/")
