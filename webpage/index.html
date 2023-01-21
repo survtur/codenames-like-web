@@ -118,7 +118,9 @@
                     <div v-else class="score" :class="'team' + t">{{s}}</div>
                     <div v-if="t===0">
                         <button type="button" id="menuBtn" @click="menu">{{$t('menu')}}<br/>…</button>
-                        <div v-for="c of blackCardsCount">{{c}}</div>
+                        <div v-if="blackCardsCount" class="blackCardContainer">
+                            <div v-for="c in blackCardsCount" :class="{opened: c <= openedBlackCardsCount}">&nbsp;</div>
+                        </div>
                     </div>
                 </template>
             </div>
@@ -229,6 +231,7 @@
                 rotated: JSON.parse(localStorage.getItem('rotated') || "false"),
 
                 state: false,
+                openedEarlier: [],
             }
         },
         computed: {
@@ -239,8 +242,8 @@
             blackCardsCount() {
                 return this.blackCards.length
             },
-            hiddenBlackCardsCount() {
-                return this.blackCards.filter(c => !c.is_opened).length;
+            openedBlackCardsCount() {
+                return this.blackCards.filter(c => c.is_opened).length;
             },
             availableWordLists() {
                 return wordsLists.filter(w => (w[2] === "" || w[2].indexOf(this.$i18n.locale) !== -1))
@@ -307,13 +310,13 @@
             cardClass(c) {
                 const cls = []
                 if (c.is_opened) {
-                    cls.push('opened')
+                    cls.push('opened');
+                    if (this.openedEarlier.indexOf(c.word) === -1) {
+                        cls.push('openedNow')
+                    }
                 }
                 if (c.is_opening) {
                     cls.push('opening')
-                }
-                if (c.just_opened) {
-                    cls.push('just-opened')
                 }
 
                 if (c.is_opened || this.isCaptain) {
@@ -342,6 +345,8 @@
                 this.isCaptain = asCap;
                 this.net.needConnection = true;
                 this.closeOverlayOnJoin = true;
+                this.state = false;
+                this.openedEarlier = [];
                 this.net.queueToSend.push(JSON.stringify({action: 'join', game: this.gameName}))
             },
             openCard(card) {
@@ -351,10 +356,6 @@
                 const i = this.state.cards.indexOf(card);
                 card.is_opening = true;
                 openCardSound.play()
-                setTimeout(() => {
-                    card.is_opening = false;
-                    card.is_opened = true;
-                }, 500)
                 if (this.state.winner === null) {
                     this.net.queueToSend.push(JSON.stringify({action: 'open', card: i, game: this.gameName}))
                 }
@@ -387,12 +388,13 @@
                     window.location.hash = data.game;
                     this.net.needConnection = false;
                 } else if (data.action === 'state') {
+                    if (this.state === false) {
+                        this.openedEarlier = data.state.cards.filter(c => c.is_opened).map(c => c.word);
+                        this.overlay = false;
+                    }
                     this.state = data.state
                     this.gameName = data.game
                     window.location.hash = data.game
-                    if (this.closeOverlayOnJoin) {
-                        this.overlay = false
-                    }
                 }
 
             },
@@ -401,11 +403,6 @@
             }
         },
         watch: {
-            overlay(v) {
-                if (v) {
-                    this.closeOverlayOnJoin = false;
-                }
-            },
             shouldSend() {
                 if (this.net.queueToSend.length === 0) {
                     return
