@@ -1,8 +1,8 @@
 <!DOCTYPE html>
-<html lang="en" xmlns="http://www.w3.org/1999/html">
+<html lang="ru" xmlns="http://www.w3.org/1999/html">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Codenames?</title>
     <meta name="viewport" content="width=device-width">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -12,8 +12,11 @@
 
 </head>
 <body>
-<script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+<script src="https://unpkg.com/vue@3.2.45/dist/vue.global.js"></script>
+<!--<script src="https://unpkg.com/vue@3.2.45/dist/vue.global.prod.js"></script>-->
+
 <script src="https://unpkg.com/vue-i18n@9"></script>
+<!--<script src="https://unpkg.com/vue-i18n@9.2.2/dist/vue-i18n.global.prod.js"></script>-->
 
 <div id="app">
     <div :class="{greyscale: greyscale, captain: isCaptain, rotated: rotated}" id="wrapper">
@@ -22,7 +25,14 @@
             <span :style="{color: connectionIndicatorColor}">●</span><span
                 :style="{color:  unansweredRequestsCount ? 'red' : ''}">●</span>
         </div>
-
+        <div id="notifications" v-if="notifications.length">
+            <transition-group name="notifications" tag="div">
+            <div class="notification" v-for="(n, i) of notifications" :key="n" @click="notifications.splice(i, 1) ">
+                <div class="msg">{{n}}</div>
+                <div class="close">×</div>
+            </div>
+            </transition-group>
+        </div>
         <div id="overlay" v-if="overlay">
             <div v-if="overlay === 'startMenu'">
                 <div class="settings">
@@ -221,6 +231,7 @@
 
                 showEnterForm: false,
                 overlay: 'startMenu',
+                notifications: [],
                 closeOnJoin: false,
                 isCaptain: false,
                 gameName: window.location.hash.replace('#', ''),
@@ -344,7 +355,7 @@
             joinGame(asCap) {
                 this.isCaptain = asCap;
                 this.net.needConnection = true;
-                this.closeOverlayOnJoin = true;
+                this.notifications = [];
                 this.state = false;
                 this.openedEarlier = [];
                 this.net.queueToSend.push(JSON.stringify({action: 'join', game: this.gameName}))

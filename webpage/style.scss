@@ -309,3 +309,62 @@ select {
     }
   }
 }
+
+#notifications {
+  width: min(20rem, calc(100vw - 3rem));
+  padding: 5px;
+  position: fixed;
+  left: 0;
+  top: 0;
+  z-index: 20;
+
+  .notification {
+    box-sizing: border-box;
+    margin-bottom: 0.5em;
+    padding: 1em;
+    width: 100%;
+    border-radius: 0.5em;
+    box-shadow: 0 0.2em 0.5em -0.1em #000;
+    background-color: #444;
+    color: #fff;
+    display: flex;
+
+    &:hover {
+      background-color: #555;
+    }
+
+    .msg {
+      flex-grow: 1;
+    }
+
+    .close {
+      color: deepskyblue;
+      user-select: none;
+    }
+  }
+}
+
+
+.notifications {
+
+  &-move, /* apply transition to moving elements */
+  &-enter-active,
+  &-leave-active {
+    transition: all 0.5s ease;
+  }
+
+  &-enter-from,
+  &-leave-to {
+    opacity: 0;
+    transform: translateX(30px);
+  }
+
+  /* ensure leaving items are taken out of layout flow so that moving
+     animations can be calculated correctly. */
+  &-leave-active {
+    position: absolute;
+  }
+
+}
+
+
