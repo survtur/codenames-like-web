@@ -358,6 +358,8 @@
                 openCardSound.play()
                 if (this.state.winner === null) {
                     this.net.queueToSend.push(JSON.stringify({action: 'open', card: i, game: this.gameName}))
+                } else {
+                    card.is_opened = true;
                 }
             },
             connectWs() {

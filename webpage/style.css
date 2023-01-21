@@ -164,22 +164,31 @@ h1, h2, h3 {
   --bg-color: yellow ;
 }
 
-.greyscale .word {
-  --bg-color: rgba(255, 255, 255, 80%);
-}
 .greyscale .team-2 .word {
   --fg-color: #000;
   --bg-color: #fff ;
 }
 .greyscale .team-1 {
   --bg-color: #fff;
+  --fg-color: #000;
 }
 .greyscale .team0 {
   background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAAIUlEQVQYV2NkIBIwEqmOgSKF/4G2YBhAkYlYnT0ETPwPABZzAgr9qxx+AAAAAElFTkSuQmCC);
   --bg-color: #f5f5f5;
+  --fg-color: #000;
 }
 .greyscale .team1 {
-  background: #aaa;
+  --bg-color: #bbb;
+  --fg-color: #000;
+}
+.greyscale .team2 {
+  --bg-color: #777;
+  --fg-color: #fff;
+}
+.greyscale .team3 {
+  background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAAIUlEQVQYV2NkIBIwEqmOgSKF/4G2YBhAkYlYnT0ETPwPABZzAgr9qxx+AAAAAElFTkSuQmCC);
+  --bg-color: #aaa;
+  --fg-color: #fff;
 }
 
 .captain .card {
